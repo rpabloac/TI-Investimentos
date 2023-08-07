@@ -1,46 +1,51 @@
 package br.com.tiinvestimentos.order;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.tiinvestimentos.api.order.OrderCreateCommand;
-import br.com.tiinvestimentos.api.order.OrderEventGateway;
-import br.com.tiinvestimentos.api.order.OrderRepository;
 import br.com.tiinvestimentos.api.order.OrderRequest;
 import br.com.tiinvestimentos.api.order.OrderResponse;
-import br.com.tiinvestimentos.util.Mapper;
+import br.com.tiinvestimentos.exceptions.DuplicateResourceException;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class OrderCreateCommandTest {
-	@Mock
-	OrderCreateCommand createCommand;
-	
-	@Mock 
-	OrderRepository orderRepository;
-	
-	@Mock
-	OrderEventGateway orderEventGateway;
-	
-	@Mock
-	Mapper mapper;
+	@Autowired
+	private OrderCreateCommand createCommand;
 	
 	@Test
-	public void testCreateOrder() throws Exception {
-		OrderRequest orderRequest = (
-				OrderRequest.builder()
-				.description("Produto 1")
+	public void shoud_create_one_order() {
+		OrderRequest order = ( OrderRequest.builder()
+				.description("produto " + UUID.randomUUID())
 				.price(new BigDecimal(15.99))
 				.build()
-			);
+		);
 		
-		OrderResponse orderResponse = createCommand.execute(orderRequest);
-		
-		assertThat(!orderResponse.equals(null));
+		OrderResponse response = createCommand.execute(order);
+		assertThat(response.getDescription() == order.getDescription());
+		assertThat(response.getPrice() == order.getPrice());
 	}
+	
+	@Test
+	public void shoud_duplicate_exception() {
+		OrderRequest order = ( OrderRequest.builder()
+				.description("produto " + UUID.randomUUID())
+				.price(new BigDecimal(15.99))
+				.build()
+		);
+		
+		createCommand.execute(order);
+		
+		assertThrows(DuplicateResourceException.class, () -> createCommand.execute(order));
+	}
+	
 }

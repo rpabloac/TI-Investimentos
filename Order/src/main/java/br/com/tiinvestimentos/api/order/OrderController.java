@@ -2,6 +2,7 @@ package br.com.tiinvestimentos.api.order;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +27,15 @@ public class OrderController {
 			OrderRequest request
 		) {
 
-		return ResponseEntity.ok(createCommand.execute(request));
+		return new ResponseEntity<OrderResponse>(
+				createCommand.execute(request), HttpStatus.CREATED
+			);
 	}
 	
 	@GetMapping
-	public List<OrderResponse> getAll() {
-		return getAllQuery.get();
-	} 
+	public ResponseEntity<?> getAll() {
+		return new ResponseEntity<List<OrderResponse>>(
+				getAllQuery.get(), HttpStatus.OK
+			);
+	}
 }
