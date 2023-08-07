@@ -30,7 +30,7 @@ public class OrderController {
 	}
 	
 	@GetMapping
-	public List<OrderResponse> list() {
+	public List<OrderResponse> getAll() {
 		return getAllQuery.get();
 	} 
 }
