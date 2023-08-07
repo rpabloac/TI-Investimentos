@@ -10,7 +10,7 @@ Projeto para entrevista TI Investimentos
 # Instalação
 
 - inicie os containers com #docker-compose up
-- inicie a aplicação dentro de cada modulo com #mvn spring-boot:run
+- inicie a aplicação #mvn spring-boot run
 
 ## Git
 

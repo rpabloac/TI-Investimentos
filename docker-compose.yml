@@ -1,0 +1,22 @@
+version: '1'
+
+networks:
+  default-network:
+    driver: bridge
+services:
+  rabbitmq:
+    image: rabbitmq:3.7.8-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbitmq
+      - RABBITMQ_DEFAULT_PASS=rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+    networks:
+      - default-network
+      
