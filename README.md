@@ -16,7 +16,7 @@ Projeto para entrevista TI Investimentos
 
 O desenvolvimento deste projeto deve seguir uma simplificação do Git Flow:
 
-- **Commits diretos** nas branchs **develop**, **homolog** e **master** são **bloqueados** devido a execução da pipeline de build nessas branchs. Portanto, **antes de desenvolver verifique se você não está em nenhuma dessas branchs.**
+- **Commits diretos** nas branchs **develop**, **homolog** e **main** são **bloqueados** devido a execução da pipeline de build nessas branchs. Portanto, **antes de desenvolver verifique se você não está em nenhuma dessas branchs.**
 
 - **Todas as features/patchs** precisam ser desenvolvidas em **branch separadas** que devem ser criadas a partir da **develop**. Por exemplo, o nome de uma branch que está desenvolvendo da funcionalidade order seria: `feature/order`.
 
